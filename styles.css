@@ -1,0 +1,71 @@
+/* Bunny Stream — visual language matches the XBlock author_view.css. */
+
+.bunnystream-author { display: block; }
+.bunnystream-panel { padding: 1rem 0; }
+.bunnystream-panel[hidden] { display: none !important; }
+
+.bunnystream-dropzone {
+  border: 2px dashed #c2c8d0; border-radius: 8px;
+  padding: 2.5rem 1rem; text-align: center; cursor: pointer;
+  transition: background-color .15s, border-color .15s;
+}
+.bunnystream-dropzone:focus,
+.bunnystream-dropzone.is-dragover { background: #f4f8fb; border-color: #4f8cff; outline: none; }
+.bunnystream-dropzone__label { margin: 0 0 .75rem; color: #5a6470; }
+
+.bunnystream-progress { width: 100%; height: 12px; }
+
+.bunnystream-error {
+  background: #fdecea; color: #a4271b; padding: .5rem .75rem;
+  border-radius: 4px; margin-top: .75rem;
+}
+
+.bunnystream-ready-grid {
+  display: grid; grid-template-columns: 220px 1fr; gap: 1rem;
+}
+.bunnystream-thumbnail img {
+  max-width: 220px; max-height: 130px; width: 100%; height: auto;
+  display: block; border-radius: 4px; background: #eaeef2;
+}
+.bunnystream-meta label { display: block; margin-bottom: .5rem; }
+.bunnystream-meta input[type="text"] { width: 100%; padding: .4rem .55rem; }
+.bunnystream-actions { display: flex; gap: .5rem; margin-top: .75rem; }
+
+.bunnystream-tab { margin-top: 1rem; }
+.bunnystream-tab > summary { cursor: pointer; padding: .5rem 0; font-weight: 600; }
+
+.bunnystream-captions { list-style: none; padding: 0; margin: .5rem 0; }
+.bunnystream-captions li {
+  display: flex; gap: .5rem; align-items: center; padding: .35rem 0;
+  border-bottom: 1px solid #eef2f6;
+}
+.bunnystream-captions li .bunny-xblock__caption-lang { font-weight: 600; min-width: 3rem; }
+
+.bunnystream-chapters { width: 100%; border-collapse: collapse; margin: .5rem 0; }
+.bunnystream-chapters th, .bunnystream-chapters td {
+  padding: .35rem .4rem; border-bottom: 1px solid #eef2f6; text-align: left;
+}
+.bunnystream-chapter-time-input { width: 6rem; }
+.bunnystream-chapter-title-input { width: 100%; }
+
+.bunnystream-modal {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45);
+  z-index: 1080; align-items: center; justify-content: center;
+}
+.bunnystream-modal[data-open="true"] { display: flex; }
+.bunnystream-modal__panel {
+  background: #fff; padding: 1.5rem; border-radius: 6px; max-width: 420px; width: calc(100% - 2rem);
+}
+
+/* Player */
+.bunnystream-player {
+  position: relative; width: 100%; max-width: 1080px; margin: 0 auto;
+  aspect-ratio: 16 / 9; background: #000;
+}
+.bunnystream-player--rounded { border-radius: 12px; overflow: hidden; }
+.bunnystream-player--padded  { padding: 1rem; background: transparent; }
+.bunnystream-player--cinema  { background: #0a0a0a; }
+.bunnystream-player--compact { max-width: 720px; }
+.bunnystream-iframe {
+  position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+}

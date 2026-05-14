@@ -1,0 +1,16 @@
+{{!
+    Bunny Stream player template — student-facing signed iframe.
+    GPLv3.
+}}
+<div class="bunnystream-player bunnystream-player--{{style}}"
+     data-bunny-player
+     data-instance="{{instance}}"
+     data-completion-percent="{{completion_percent}}">
+  <iframe
+    src="{{embed_url}}"
+    title="{{title}}"
+    class="bunnystream-iframe"
+    loading="lazy"
+    allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture"
+    allowfullscreen></iframe>
+</div>

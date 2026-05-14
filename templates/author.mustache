@@ -1,0 +1,112 @@
+{{!
+    Bunny Stream author template — 5 panels driven by data-state.
+    GPLv3.
+}}
+<div class="bunnystream-author" data-state="{{state}}">
+
+  <div class="bunnystream-panel" data-panel="empty" {{^state}}{{/state}}>
+    <div class="bunnystream-dropzone" data-bunny-dropzone tabindex="0">
+      <p class="bunnystream-dropzone__label">{{#str}}drop_video_here, mod_bunnystream{{/str}}</p>
+      <button type="button" class="btn btn-primary" data-action="choose">
+        {{#str}}choose_video, mod_bunnystream{{/str}}
+      </button>
+      <input type="file" data-bunny-file accept="video/*" hidden>
+    </div>
+    <div class="bunnystream-error" data-bunny-error hidden></div>
+  </div>
+
+  <div class="bunnystream-panel" data-panel="uploading" hidden>
+    <p><strong>{{#str}}uploading_label, mod_bunnystream{{/str}}:</strong>
+       <span data-bunny-filename></span></p>
+    <progress data-bunny-progress max="100" value="0" class="bunnystream-progress"></progress>
+    <p><span data-bunny-pct>0%</span></p>
+    <button type="button" class="btn btn-secondary" data-action="cancel-upload">
+      {{#str}}cancel_upload, mod_bunnystream{{/str}}
+    </button>
+  </div>
+
+  <div class="bunnystream-panel" data-panel="processing" hidden>
+    <p>{{#str}}processing_label, mod_bunnystream{{/str}}</p>
+    <p data-bunny-elapsed hidden><strong>{{#str}}processing_elapsed, mod_bunnystream{{/str}}:</strong>
+       <span data-bunny-elapsed-value>0:00</span></p>
+  </div>
+
+  <div class="bunnystream-panel" data-panel="ready" {{^has_video}}hidden{{/has_video}}>
+    <div class="bunnystream-ready-grid">
+      <div class="bunnystream-thumbnail">
+        <img data-bunny-thumbnail-img src="{{thumbnail}}" alt="" {{^thumbnail}}style="display:none"{{/thumbnail}}>
+        <button type="button" class="btn btn-link btn-sm" data-action="upload-thumbnail">
+          {{#str}}thumbnail_replace, mod_bunnystream{{/str}}
+        </button>
+        <input type="file" data-bunny-thumbnail-file accept="image/jpeg,image/png,image/webp" hidden>
+        <span data-bunny-thumbnail-status hidden></span>
+      </div>
+      <div class="bunnystream-meta">
+        <label>{{#str}}video_title, mod_bunnystream{{/str}}
+          <input type="text" data-bunny-title value="{{title}}" maxlength="250">
+        </label>
+        <p><small>{{#str}}video_id, mod_bunnystream{{/str}}: <code data-bunny-guid>{{guid_short}}</code></small></p>
+        <p data-bunny-duration {{^duration}}hidden{{/duration}}>
+          <small>{{#str}}video_duration, mod_bunnystream{{/str}}: <span data-bunny-duration-value>{{duration}}s</span></small>
+        </p>
+        <div class="bunnystream-actions">
+          <button type="button" class="btn btn-secondary" data-action="replace">
+            {{#str}}replace_video, mod_bunnystream{{/str}}
+          </button>
+          <button type="button" class="btn btn-danger" data-action="delete">
+            {{#str}}delete_video, mod_bunnystream{{/str}}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <details class="bunnystream-tab">
+      <summary>{{#str}}captions_section, mod_bunnystream{{/str}}</summary>
+      <ul class="bunnystream-captions" data-bunny-captions-list></ul>
+      <p data-bunny-captions-empty>{{#str}}captions_empty, mod_bunnystream{{/str}}</p>
+      <button type="button" class="btn btn-sm btn-secondary" data-action="upload-caption">
+        {{#str}}caption_add, mod_bunnystream{{/str}}
+      </button>
+      <button type="button" class="btn btn-sm btn-link" data-action="transcribe">
+        {{#str}}caption_transcribe, mod_bunnystream{{/str}}
+      </button>
+      <input type="file" data-bunny-caption-file accept=".vtt" hidden>
+      <span data-bunny-caption-status hidden></span>
+    </details>
+
+    <details class="bunnystream-tab">
+      <summary>{{#str}}chapters_section, mod_bunnystream{{/str}}</summary>
+      <table class="bunnystream-chapters">
+        <thead><tr><th>Start</th><th>Title</th><th></th></tr></thead>
+        <tbody data-bunny-chapters-rows></tbody>
+      </table>
+      <button type="button" class="btn btn-sm btn-secondary" data-action="add-chapter">
+        {{#str}}chapter_add, mod_bunnystream{{/str}}
+      </button>
+      <button type="button" class="btn btn-sm btn-primary" data-action="save-chapters" data-bunny-save-chapters disabled>
+        {{#str}}chapter_save, mod_bunnystream{{/str}}
+      </button>
+      <span data-bunny-chapter-status hidden></span>
+    </details>
+  </div>
+
+  <div class="bunnystream-panel" data-panel="failed" hidden>
+    <p class="text-danger">{{#str}}failed_label, mod_bunnystream{{/str}}</p>
+    <button type="button" class="btn btn-secondary" data-action="replace">
+      {{#str}}replace_video, mod_bunnystream{{/str}}
+    </button>
+  </div>
+
+  <div class="bunnystream-modal" data-bunny-modal>
+    <div class="bunnystream-modal__panel" role="dialog" aria-modal="true">
+      <h3>{{#str}}delete_confirm_title, mod_bunnystream{{/str}}</h3>
+      <p>{{#str}}delete_confirm_body, mod_bunnystream{{/str}}</p>
+      <button type="button" class="btn btn-secondary" data-action="modal-cancel">
+        {{#str}}delete_confirm_no, mod_bunnystream{{/str}}
+      </button>
+      <button type="button" class="btn btn-danger" data-action="modal-confirm">
+        {{#str}}delete_confirm_yes, mod_bunnystream{{/str}}
+      </button>
+    </div>
+  </div>
+</div>

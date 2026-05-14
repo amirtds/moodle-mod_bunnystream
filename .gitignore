@@ -1,0 +1,23 @@
+# Moodle build artifacts (we ship amd/build/ for now; flip later if grunt CI lands).
+# Uncomment to ignore them:
+# amd/build/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Claude Code session state — never commit to a public repo
+.claude/
+
+# Local debug files
+*.log
+
+# Composer (not used yet, but ignore proactively)
+vendor/
+composer.lock
+
+# PHPUnit local artifacts
+.phpunit.cache/
+.phpunit.result.cache
