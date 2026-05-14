@@ -30,14 +30,14 @@ $PAGE->set_title(format_string($activity->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context(context_module::instance($cm->id));
 
-// Trigger course_module_viewed event (standard).
-$event = \core\event\course_module_viewed::create([
+// Trigger course_module_viewed event (per-module subclass of the abstract core event).
+$event = \mod_bunnystream\event\course_module_viewed::create([
     'objectid' => $activity->id,
     'context'  => context_module::instance($cm->id),
-    'other'    => ['modulename' => 'bunnystream', 'instanceid' => $activity->id],
 ]);
 $event->add_record_snapshot('course_module', $cm);
 $event->add_record_snapshot('course', $course);
+$event->add_record_snapshot('bunnystream', $activity);
 $event->trigger();
 
 echo $OUTPUT->header();
