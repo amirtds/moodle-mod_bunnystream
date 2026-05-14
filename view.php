@@ -35,7 +35,7 @@ $event = \mod_bunnystream\event\course_module_viewed::create([
     'objectid' => $activity->id,
     'context'  => context_module::instance($cm->id),
 ]);
-$event->add_record_snapshot('course_module', $cm);
+$event->add_record_snapshot('course_modules', $cm);
 $event->add_record_snapshot('course', $course);
 $event->add_record_snapshot('bunnystream', $activity);
 $event->trigger();
