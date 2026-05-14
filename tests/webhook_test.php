@@ -39,7 +39,7 @@ class webhook_test extends \advanced_testcase {
     public function test_known_token_with_malformed_payload_rejected(): void {
         global $DB;
         $token = str_repeat('a', 64);
-        $DB->insert_record('bunnystream_config', (object)[
+        $row = (object)[
             'id' => 1,
             'library_id' => '12345',
             'api_key_ciphertext' => '',
@@ -47,7 +47,12 @@ class webhook_test extends \advanced_testcase {
             'cdn_hostname' => '',
             'webhook_secret' => $token,
             'timemodified' => time(),
-        ], false, false, true);
+        ];
+        if ($DB->record_exists('bunnystream_config', ['id' => 1])) {
+            $DB->update_record('bunnystream_config', $row);
+        } else {
+            $DB->insert_record_raw('bunnystream_config', $row, false, false, true);
+        }
 
         $result = $this->call_process($token, 'not-json');
         $this->assertSame('invalid_json', $result['error']);
@@ -59,7 +64,7 @@ class webhook_test extends \advanced_testcase {
     public function test_library_mismatch_rejected(): void {
         global $DB;
         $token = str_repeat('b', 64);
-        $DB->insert_record('bunnystream_config', (object)[
+        $row = (object)[
             'id' => 1,
             'library_id' => '12345',
             'api_key_ciphertext' => '',
@@ -67,7 +72,12 @@ class webhook_test extends \advanced_testcase {
             'cdn_hostname' => '',
             'webhook_secret' => $token,
             'timemodified' => time(),
-        ], false, false, true);
+        ];
+        if ($DB->record_exists('bunnystream_config', ['id' => 1])) {
+            $DB->update_record('bunnystream_config', $row);
+        } else {
+            $DB->insert_record_raw('bunnystream_config', $row, false, false, true);
+        }
         $result = $this->call_process($token, json_encode([
             'VideoGuid' => 'guid-1', 'VideoLibraryId' => 99999, 'Status' => 4,
         ]));
@@ -77,7 +87,7 @@ class webhook_test extends \advanced_testcase {
     public function test_terminal_state_regression_rejected(): void {
         global $DB;
         $token = str_repeat('c', 64);
-        $DB->insert_record('bunnystream_config', (object)[
+        $row = (object)[
             'id' => 1,
             'library_id' => '12345',
             'api_key_ciphertext' => '',
@@ -85,7 +95,12 @@ class webhook_test extends \advanced_testcase {
             'cdn_hostname' => '',
             'webhook_secret' => $token,
             'timemodified' => time(),
-        ], false, false, true);
+        ];
+        if ($DB->record_exists('bunnystream_config', ['id' => 1])) {
+            $DB->update_record('bunnystream_config', $row);
+        } else {
+            $DB->insert_record_raw('bunnystream_config', $row, false, false, true);
+        }
         $DB->insert_record('bunnystream_videos', (object)[
             'guid' => 'guid-1', 'library_id' => '12345', 'title' => '',
             'status' => 'ready', 'created_by' => null,

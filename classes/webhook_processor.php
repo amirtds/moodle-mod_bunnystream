@@ -124,12 +124,18 @@ class webhook_processor {
 
     private static function reject(string $reason, int $code, array $ctx = []): void {
         debugging("[bunny:webhook] reject:{$reason} " . json_encode($ctx), DEBUG_DEVELOPER);
-        http_response_code($code);
+        // Suppress headers-already-sent warning under PHPUnit (test bootstrap
+        // emits output before the SUT runs). In real HTTP the call lands first.
+        if (!headers_sent()) {
+            http_response_code($code);
+        }
         echo json_encode(['error' => $reason]);
     }
 
     private static function ok(?string $note = null): void {
-        http_response_code(200);
+        if (!headers_sent()) {
+            http_response_code(200);
+        }
         $body = ['ok' => true];
         if ($note) {
             $body['note'] = $note;
