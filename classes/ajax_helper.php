@@ -92,20 +92,24 @@ class ajax_helper {
 
     /**
      * In-process rate limiter backed by MUC. Returns true if under the cap.
+     *
+     * The bucket name is hashed to a hex string so it satisfies MUC's
+     * simplekeys constraints regardless of caller-side delimiters.
      */
     public static function rate_ok(string $bucket, int $maxperwindow, int $windowseconds = 60): bool {
         $cache = \cache::make('mod_bunnystream', 'ratelimit');
+        $key = 'rl_' . md5($bucket);
         $now = time();
-        $row = $cache->get($bucket);
+        $row = $cache->get($key);
         if (!$row || $row['reset_at'] <= $now) {
-            $cache->set($bucket, ['count' => 1, 'reset_at' => $now + $windowseconds]);
+            $cache->set($key, ['count' => 1, 'reset_at' => $now + $windowseconds]);
             return true;
         }
         if ($row['count'] >= $maxperwindow) {
             return false;
         }
         $row['count']++;
-        $cache->set($bucket, $row);
+        $cache->set($key, $row);
         return true;
     }
 
