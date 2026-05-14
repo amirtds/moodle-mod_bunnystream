@@ -29,6 +29,8 @@ class bunny_client {
     // ---- HTTP -------------------------------------------------------------
 
     private function request(string $method, string $path, ?array $jsonbody = null, ?string $rawbody = null, ?string $rawcontenttype = null): array {
+        global $CFG;
+        require_once($CFG->libdir . '/filelib.php');
         $url = self::BUNNY_BASE . $path;
         $curl = new \curl();
         $headers = [
