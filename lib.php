@@ -17,12 +17,10 @@ function bunnystream_supports($feature) {
         case FEATURE_COMPLETION_TRACKS_VIEWS:
         case FEATURE_COMPLETION_HAS_RULES:
         case FEATURE_MOD_PURPOSE:
-            return true;
-        case FEATURE_MOD_INTRO ?? null:
+        case FEATURE_IDNUMBER:
             return true;
         case FEATURE_GROUPS:
         case FEATURE_GROUPINGS:
-        case FEATURE_IDNUMBER:
             return false;
         default:
             return null;
@@ -45,6 +43,11 @@ function bunnystream_add_instance(stdClass $data, $mform = null) {
     if (!isset($data->completion_percent) || (int)$data->completion_percent <= 0) {
         $data->completion_percent = (int)(get_config('mod_bunnystream', 'completion_percent') ?: 90);
     }
+    // The standard core post-save code reads $moduleinfo->cmidnumber even
+    // when no idnumber was supplied — surface a default so it's never undef.
+    if (!property_exists($data, 'cmidnumber')) {
+        $data->cmidnumber = '';
+    }
     $id = $DB->insert_record('bunnystream', $data);
     bunnystream_grade_item_update((object)array_merge((array)$data, ['id' => $id]));
     return $id;
@@ -57,6 +60,9 @@ function bunnystream_update_instance(stdClass $data, $mform = null) {
     global $DB;
     $data->id = $data->instance;
     $data->timemodified = time();
+    if (!property_exists($data, 'cmidnumber')) {
+        $data->cmidnumber = '';
+    }
     $DB->update_record('bunnystream', $data);
     bunnystream_grade_item_update($data);
     return true;
