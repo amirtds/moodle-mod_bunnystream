@@ -3,9 +3,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$callbacks = [
-    [
-        'hook'     => \core\hook\after_config::class,
-        'callback' => [\mod_bunnystream\hook_callbacks::class, 'after_config'],
-    ],
-];
+// No hook callbacks needed in v0.1 — credentials are encrypted at write-time
+// by Moodle's admin_setting_encryptedpassword, not migrated post-hoc.
+$callbacks = [];

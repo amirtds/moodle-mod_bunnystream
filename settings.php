@@ -19,20 +19,18 @@ if ($hassiteconfig) {
         PARAM_ALPHANUMEXT
     ));
 
-    // API key (write-only — we never echo it back).
-    $settings->add(new admin_setting_configpasswordunmask(
+    // API key (encrypted at rest via \core\encryption).
+    $settings->add(new admin_setting_encryptedpassword(
         'mod_bunnystream/api_key',
         get_string('setting_api_key', 'mod_bunnystream'),
-        get_string('setting_api_key_desc', 'mod_bunnystream'),
-        ''
+        get_string('setting_api_key_desc', 'mod_bunnystream')
     ));
 
-    // Security / Token Authentication key.
-    $settings->add(new admin_setting_configpasswordunmask(
+    // Security / Token Authentication key (encrypted).
+    $settings->add(new admin_setting_encryptedpassword(
         'mod_bunnystream/security_key',
         get_string('setting_security_key', 'mod_bunnystream'),
-        get_string('setting_security_key_desc', 'mod_bunnystream'),
-        ''
+        get_string('setting_security_key_desc', 'mod_bunnystream')
     ));
 
     // CDN hostname (vz-xxxx.b-cdn.net).
