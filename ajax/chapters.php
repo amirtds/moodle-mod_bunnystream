@@ -1,6 +1,8 @@
 <?php
 // GPLv3 — see LICENSE.
 
+define('AJAX_SCRIPT', true);
+define('NO_DEBUG_DISPLAY', true);
 require_once(__DIR__ . '/../../../config.php');
 
 use mod_bunnystream\ajax_helper;
@@ -11,7 +13,7 @@ global $DB;
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 if ($method === 'GET') {
-    require_login();
+    require_login(null, false);
     $guid = required_param('guid', PARAM_ALPHANUMEXT);
     try {
         $cfg = \mod_bunnystream\config::decrypted();

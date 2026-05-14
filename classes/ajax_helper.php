@@ -23,14 +23,23 @@ class ajax_helper {
 
     /**
      * Parse a JSON body off php://input. Returns [] if absent.
+     *
+     * Cached so repeated calls inside the same request don't re-read the
+     * (already-consumed) input stream — second read returns empty.
      */
+    private static ?array $jsonbodycache = null;
     public static function read_json_body(): array {
+        if (self::$jsonbodycache !== null) {
+            return self::$jsonbodycache;
+        }
         $raw = file_get_contents('php://input');
         if (!$raw) {
+            self::$jsonbodycache = [];
             return [];
         }
         $decoded = json_decode($raw, true);
-        return is_array($decoded) ? $decoded : [];
+        self::$jsonbodycache = is_array($decoded) ? $decoded : [];
+        return self::$jsonbodycache;
     }
 
     /**
@@ -38,8 +47,15 @@ class ajax_helper {
      * Throws a moodle_exception if not. Returns the bunny config (decrypted).
      */
     public static function require_manage(): \stdClass {
-        require_login();
-        if (!confirm_sesskey()) {
+        require_login(null, false);
+        // Accept sesskey from JSON body too — AMD modules POST JSON, which
+        // doesn't populate $_POST so confirm_sesskey() can't find it otherwise.
+        $sesskey = optional_param('sesskey', '', PARAM_RAW);
+        if ($sesskey === '') {
+            $body = self::read_json_body();
+            $sesskey = $body['sesskey'] ?? '';
+        }
+        if (!confirm_sesskey($sesskey ?: null)) {
             self::fail('invalid_sesskey', 403);
         }
         // System-level check — author UX is gated by mod/bunnystream:addinstance

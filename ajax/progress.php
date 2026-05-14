@@ -4,16 +4,18 @@
 // Receives % watched updates from the student player and persists them as
 // the user's max-watched percent. Drives completion + gradebook.
 
+define('AJAX_SCRIPT', true);
+define('NO_DEBUG_DISPLAY', true);
 require_once(__DIR__ . '/../../../config.php');
 
 use mod_bunnystream\ajax_helper;
 
 global $DB, $USER;
 
-require_login();
-if (!confirm_sesskey()) ajax_helper::fail('invalid_sesskey', 403);
-
+require_login(null, false);
 $body = ajax_helper::read_json_body();
+$sesskey = optional_param('sesskey', '', PARAM_RAW) ?: ($body['sesskey'] ?? '');
+if (!confirm_sesskey($sesskey ?: null)) ajax_helper::fail('invalid_sesskey', 403);
 $instance = (int)($body['instance'] ?? 0);
 $cmid     = (int)($body['cmid'] ?? 0);
 $percent  = max(0, min(100, (int)($body['percent'] ?? 0)));

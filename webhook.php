@@ -10,7 +10,7 @@
 
 define('NO_MOODLE_COOKIES', true);
 define('NO_DEBUG_DISPLAY', true);
-
+define('AJAX_SCRIPT', true);
 require_once(__DIR__ . '/../../config.php');
 
 header('Content-Type: application/json');

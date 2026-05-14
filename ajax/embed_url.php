@@ -1,6 +1,8 @@
 <?php
 // GPLv3 — see LICENSE.
 
+define('AJAX_SCRIPT', true);
+define('NO_DEBUG_DISPLAY', true);
 require_once(__DIR__ . '/../../../config.php');
 
 use mod_bunnystream\ajax_helper;
@@ -8,7 +10,7 @@ use mod_bunnystream\token;
 
 global $DB;
 
-require_login();
+require_login(null, false);
 
 $guid = optional_param('guid', '', PARAM_ALPHANUMEXT);
 if ($guid === '') {

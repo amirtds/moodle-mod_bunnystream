@@ -1,6 +1,8 @@
 <?php
 // GPLv3 — see LICENSE.
 
+define('AJAX_SCRIPT', true);
+define('NO_DEBUG_DISPLAY', true);
 require_once(__DIR__ . '/../../../config.php');
 
 use mod_bunnystream\ajax_helper;
@@ -8,10 +10,7 @@ use mod_bunnystream\bunny_client;
 
 global $DB;
 
-require_login();
-if (!confirm_sesskey() && !isloggedin()) {
-    ajax_helper::fail('invalid_session', 403);
-}
+require_login(null, false);
 
 $guid = optional_param('guid', '', PARAM_ALPHANUMEXT);
 if ($guid === '') {
