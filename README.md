@@ -95,6 +95,15 @@ Three guards (mirroring the XBlock):
 - Embed URLs signed at render time (`sha256(securityKey + guid + expires)`, 6h TTL).
 - Webhook auth is URL-token-only (Bunny does not sign payloads).
 
+## Commercial support and managed hosting
+
+This plugin is free and works standalone with any Bunny.net account. If you would
+rather not run Moodle yourself, Cubite offers managed Moodle hosting: version
+upgrades, CVE patching, and plugin work including this module.
+
+- Managed Moodle hosting and support: https://cubite.io/services/moodle-hosting-and-support
+- Talk to a senior Moodle engineer: https://cubite.io/contact
+
 ## License
 
 GPL v3. See `LICENSE`.
